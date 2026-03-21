@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="A simple, functional teleprompter app for Android">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>Teleprompter</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='62' text-anchor='middle' font-size='48' fill='%2300e0ff'>T</text></svg>">
+</head>
+<body>
+
+  <!-- ===== EDITOR VIEW ===== -->
+  <div id="editor-view" class="view active">
+    <header class="editor-header">
+      <h1>Teleprompter</h1>
+    </header>
+
+    <div class="editor-body">
+      <!-- Script management -->
+      <div class="script-bar">
+        <select id="script-select" aria-label="Saved scripts">
+          <option value="__new__">New Script</option>
+        </select>
+        <button id="btn-save" class="icon-btn" title="Save script">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        </button>
+        <button id="btn-delete" class="icon-btn" title="Delete script">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        </button>
+      </div>
+
+      <!-- Script name input -->
+      <input type="text" id="script-name" class="script-name-input" placeholder="Script name..." maxlength="60">
+
+      <!-- Text area -->
+      <textarea id="script-text" placeholder="Paste or type your script here..." spellcheck="false"></textarea>
+
+      <!-- Settings -->
+      <div class="settings-panel">
+        <div class="setting-row">
+          <label for="font-size-range">Font Size</label>
+          <input type="range" id="font-size-range" min="24" max="96" value="42">
+          <span id="font-size-val" class="setting-value">42px</span>
+        </div>
+        <div class="setting-row">
+          <label for="speed-range">Scroll Speed</label>
+          <input type="range" id="speed-range" min="10" max="200" value="60">
+          <span id="speed-val" class="setting-value">60</span>
+        </div>
+        <div class="setting-row">
+          <label for="mirror-toggle">Mirror Mode</label>
+          <label class="toggle">
+            <input type="checkbox" id="mirror-toggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <label for="countdown-toggle">Countdown (3s)</label>
+          <label class="toggle">
+            <input type="checkbox" id="countdown-toggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Start button -->
+      <button id="btn-start" class="btn-start">Start Prompting</button>
+    </div>
+  </div>
+
+  <!-- ===== PROMPTER VIEW ===== -->
+  <div id="prompter-view" class="view">
+    <!-- Countdown overlay -->
+    <div id="countdown-overlay" class="countdown-overlay hidden">
+      <span id="countdown-number" class="countdown-number">3</span>
+    </div>
+
+    <!-- Scrolling text container -->
+    <div id="prompter-wrap" class="prompter-wrap">
+      <div id="prompter-text" class="prompter-text"></div>
+    </div>
+
+    <!-- Progress bar -->
+    <div id="progress-bar" class="progress-bar">
+      <div id="progress-fill" class="progress-fill"></div>
+    </div>
+
+    <!-- Controls overlay -->
+    <div id="controls-overlay" class="controls-overlay">
+      <div class="controls-top">
+        <button id="btn-back" class="ctrl-btn" title="Back to editor">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </button>
+        <button id="btn-mirror-live" class="ctrl-btn" title="Toggle mirror">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 2 2 7 7 12"/><path d="M2 7h14a4 4 0 010 8h-3"/></svg>
+        </button>
+      </div>
+
+      <div class="controls-center">
+        <button id="btn-play" class="ctrl-btn ctrl-btn-large" title="Play/Pause">
+          <svg id="icon-play" width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg id="icon-pause" width="36" height="36" viewBox="0 0 24 24" fill="currentColor" class="hidden"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+      </div>
+
+      <div class="controls-bottom">
+        <div class="ctrl-group">
+          <span class="ctrl-label">Speed</span>
+          <button id="btn-speed-down" class="ctrl-btn ctrl-btn-small">−</button>
+          <span id="speed-live-val" class="ctrl-value">60</span>
+          <button id="btn-speed-up" class="ctrl-btn ctrl-btn-small">+</button>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Size</span>
+          <button id="btn-size-down" class="ctrl-btn ctrl-btn-small">A−</button>
+          <span id="size-live-val" class="ctrl-value">42</span>
+          <button id="btn-size-up" class="ctrl-btn ctrl-btn-small">A+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tap zone (play/pause + show controls) -->
+    <div id="tap-zone" class="tap-zone"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

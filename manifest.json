@@ -1,0 +1,24 @@
+{
+  "name": "Teleprompter",
+  "short_name": "Teleprompter",
+  "description": "A simple, functional teleprompter app",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='%23111'/><text x='256' y='320' text-anchor='middle' font-size='256' font-weight='bold' fill='%2300d4ff' font-family='sans-serif'>T</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='36' fill='%23111'/><text x='96' y='124' text-anchor='middle' font-size='100' font-weight='bold' fill='%2300d4ff' font-family='sans-serif'>T</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

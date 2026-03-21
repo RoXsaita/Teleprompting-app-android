@@ -1,0 +1,502 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0a0a0a;
+  --bg-surface: #161616;
+  --bg-elevated: #222;
+  --text: #eee;
+  --text-dim: #888;
+  --accent: #00d4ff;
+  --accent-glow: rgba(0, 212, 255, 0.25);
+  --danger: #ff4060;
+  --radius: 10px;
+  --transition: 0.2s ease;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ===== VIEW MANAGEMENT ===== */
+
+.view {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+}
+
+.view.active {
+  display: flex;
+}
+
+/* ===== EDITOR VIEW ===== */
+
+.editor-header {
+  padding: 16px 20px 8px;
+  flex-shrink: 0;
+}
+
+.editor-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+}
+
+.editor-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 16px;
+  overflow-y: auto;
+  gap: 12px;
+}
+
+/* Script bar */
+.script-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.script-bar select {
+  flex: 1;
+  padding: 10px 12px;
+  background: var(--bg-surface);
+  color: var(--text);
+  border: 1px solid var(--bg-elevated);
+  border-radius: var(--radius);
+  font-size: 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-elevated);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color var(--transition), background var(--transition);
+}
+
+.icon-btn:active {
+  background: var(--bg-elevated);
+  color: var(--text);
+}
+
+/* Script name */
+.script-name-input {
+  padding: 10px 12px;
+  background: var(--bg-surface);
+  color: var(--text);
+  border: 1px solid var(--bg-elevated);
+  border-radius: var(--radius);
+  font-size: 15px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.script-name-input:focus {
+  border-color: var(--accent);
+}
+
+/* Textarea */
+#script-text {
+  flex: 1;
+  min-height: 180px;
+  padding: 14px;
+  background: var(--bg-surface);
+  color: var(--text);
+  border: 1px solid var(--bg-elevated);
+  border-radius: var(--radius);
+  font-size: 16px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  -webkit-user-select: text;
+  user-select: text;
+  transition: border-color var(--transition);
+}
+
+#script-text:focus {
+  border-color: var(--accent);
+}
+
+#script-text::placeholder {
+  color: var(--text-dim);
+}
+
+/* Settings panel */
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-elevated);
+  border-radius: var(--radius);
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.setting-row label:first-child {
+  flex: 0 0 110px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.setting-row input[type="range"] {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--bg-elevated);
+  border-radius: 2px;
+  outline: none;
+}
+
+.setting-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.setting-value {
+  flex: 0 0 42px;
+  text-align: right;
+  font-size: 14px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-elevated);
+  border-radius: 26px;
+  transition: background var(--transition);
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  background: var(--text-dim);
+  border-radius: 50%;
+  transition: transform var(--transition), background var(--transition);
+}
+
+.toggle input:checked + .toggle-slider {
+  background: var(--accent);
+}
+
+.toggle input:checked + .toggle-slider::before {
+  transform: translateX(22px);
+  background: #fff;
+}
+
+/* Start button */
+.btn-start {
+  padding: 16px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity var(--transition), transform var(--transition);
+  flex-shrink: 0;
+}
+
+.btn-start:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+.btn-start:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ===== PROMPTER VIEW ===== */
+
+#prompter-view {
+  background: #000;
+  overflow: hidden;
+}
+
+.prompter-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.prompter-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 50vh 24px 50vh;
+  color: #fff;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  will-change: transform;
+}
+
+.prompter-text.mirror {
+  transform: scaleX(-1);
+}
+
+/* Fade edges for reading guide */
+.prompter-wrap::before,
+.prompter-wrap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30vh;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.prompter-wrap::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%);
+}
+
+.prompter-wrap::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+}
+
+/* Reading guide line */
+.prompter-wrap .guide-line {
+  position: absolute;
+  top: 35%;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.4;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Progress bar */
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  z-index: 10;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.3s linear;
+}
+
+/* Countdown overlay */
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.9);
+  z-index: 50;
+}
+
+.countdown-number {
+  font-size: 120px;
+  font-weight: 800;
+  color: var(--accent);
+  animation: countPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes countPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.7; }
+}
+
+/* Controls overlay */
+.controls-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.controls-overlay.hidden {
+  opacity: 0;
+}
+
+.controls-overlay > * {
+  pointer-events: auto;
+}
+
+.controls-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.controls-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.controls-bottom {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding-bottom: 12px;
+}
+
+.ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background var(--transition);
+}
+
+.ctrl-btn:active {
+  background: rgba(255,255,255,0.25);
+}
+
+.ctrl-btn-large {
+  width: 72px;
+  height: 72px;
+}
+
+.ctrl-btn-small {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ctrl-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctrl-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+
+.ctrl-value {
+  width: 32px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tap zone */
+.tap-zone {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  cursor: pointer;
+}
+
+/* Utility */
+.hidden {
+  display: none !important;
+}
+
+/* Scrollbar hide for editor */
+.editor-body::-webkit-scrollbar {
+  width: 0;
+}
+
+/* Safe area insets for modern phones */
+@supports (padding: env(safe-area-inset-top)) {
+  .editor-header {
+    padding-top: calc(16px + env(safe-area-inset-top));
+  }
+  .controls-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .controls-bottom {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .progress-bar {
+    bottom: env(safe-area-inset-bottom);
+  }
+}
