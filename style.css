@@ -139,6 +139,12 @@ html, body {
   transition: border-color var(--transition);
 }
 
+#script-text.rtl-editor {
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: plaintext;
+}
+
 #script-text:focus {
   border-color: var(--accent);
 }

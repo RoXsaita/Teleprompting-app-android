@@ -159,6 +159,7 @@
     mirrorToggle.checked = settings.mirror;
     rtlToggle.checked = settings.rtl;
     countdownToggle.checked = settings.countdown;
+    applyEditorDirection();
   }
 
   fontSizeRange.addEventListener("input", () => {
@@ -180,6 +181,7 @@
 
   rtlToggle.addEventListener("change", () => {
     settings.rtl = rtlToggle.checked;
+    applyEditorDirection();
     persistSettings();
   });
 
@@ -234,6 +236,11 @@
     prompterText.classList.toggle("mirror", settings.mirror);
     prompterText.classList.toggle("rtl", settings.rtl);
     prompterText.dir = settings.rtl ? "rtl" : "ltr";
+  }
+
+  function applyEditorDirection() {
+    scriptText.dir = settings.rtl ? "rtl" : "ltr";
+    scriptText.classList.toggle("rtl-editor", settings.rtl);
   }
 
   function startScroll() {
