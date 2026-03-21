@@ -14,6 +14,7 @@
   const speedRange = document.getElementById("speed-range");
   const speedVal = document.getElementById("speed-val");
   const mirrorToggle = document.getElementById("mirror-toggle");
+  const rtlToggle = document.getElementById("rtl-toggle");
   const countdownToggle = document.getElementById("countdown-toggle");
   const btnStart = document.getElementById("btn-start");
 
@@ -35,12 +36,14 @@
   const btnSizeDown = document.getElementById("btn-size-down");
   const btnSizeUp = document.getElementById("btn-size-up");
   const sizeLiveVal = document.getElementById("size-live-val");
+  const btnRtlLive = document.getElementById("btn-rtl-live");
 
   // ===== State =====
   let settings = {
     fontSize: 42,
     speed: 60,
     mirror: false,
+    rtl: false,
     countdown: true,
   };
   let scrollPos = 0;
@@ -154,6 +157,7 @@
     speedRange.value = settings.speed;
     speedVal.textContent = settings.speed;
     mirrorToggle.checked = settings.mirror;
+    rtlToggle.checked = settings.rtl;
     countdownToggle.checked = settings.countdown;
   }
 
@@ -171,6 +175,11 @@
 
   mirrorToggle.addEventListener("change", () => {
     settings.mirror = mirrorToggle.checked;
+    persistSettings();
+  });
+
+  rtlToggle.addEventListener("change", () => {
+    settings.rtl = rtlToggle.checked;
     persistSettings();
   });
 
@@ -219,6 +228,12 @@
     }
     lastFrameTime = timestamp;
     animFrameId = requestAnimationFrame(scrollLoop);
+  }
+
+  function applyPrompterLayout() {
+    prompterText.classList.toggle("mirror", settings.mirror);
+    prompterText.classList.toggle("rtl", settings.rtl);
+    prompterText.dir = settings.rtl ? "rtl" : "ltr";
   }
 
   function startScroll() {
@@ -343,7 +358,7 @@
 
     prompterText.textContent = text;
     prompterText.style.fontSize = settings.fontSize + "px";
-    prompterText.classList.toggle("mirror", settings.mirror);
+    applyPrompterLayout();
 
     speedLiveVal.textContent = settings.speed;
     sizeLiveVal.textContent = settings.fontSize;
@@ -386,8 +401,17 @@
   btnMirrorLive.addEventListener("click", (e) => {
     e.stopPropagation();
     settings.mirror = !settings.mirror;
-    prompterText.classList.toggle("mirror", settings.mirror);
+    applyPrompterLayout();
     mirrorToggle.checked = settings.mirror;
+    persistSettings();
+    resetControlsTimer();
+  });
+
+  btnRtlLive.addEventListener("click", (e) => {
+    e.stopPropagation();
+    settings.rtl = !settings.rtl;
+    applyPrompterLayout();
+    rtlToggle.checked = settings.rtl;
     persistSettings();
     resetControlsTimer();
   });

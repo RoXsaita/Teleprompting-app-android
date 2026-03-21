@@ -296,6 +296,12 @@ html, body {
   transform: scaleX(-1);
 }
 
+.prompter-text.rtl {
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: isolate;
+}
+
 /* Fade edges for reading guide */
 .prompter-wrap::before,
 .prompter-wrap::after {

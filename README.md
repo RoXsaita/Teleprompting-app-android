@@ -9,6 +9,7 @@ A simple, functional teleprompter app that works on Android (and any modern brow
 - Adjustable scroll speed and font size
 - Mirror mode for teleprompter mirrors
 - Optional countdown before starting
+- RTL mode for Arabic and other right-to-left scripts
 - Screen stays on during prompting (Wake Lock API)
 - Works offline after first visit
 - Installable on Android home screen
@@ -32,7 +33,7 @@ Then open `http://localhost:3000` in your browser.
 
 1. Type or paste your script in the editor
 2. Adjust font size and scroll speed
-3. Toggle mirror mode if using a teleprompter mirror
+3. Toggle mirror mode or RTL mode for Arabic script
 4. Tap **Start Prompting**
 5. Tap anywhere to play/pause
 6. Use the on-screen controls for speed and font size adjustments
