@@ -497,6 +497,77 @@ html, body {
   width: 0;
 }
 
+/* Galaxy Z Fold 6 inner screen: ~904x2424px, ~22:9, very tall narrow */
+@media screen and (max-width: 430px) {
+  .editor-header {
+    padding: 12px 14px 6px;
+  }
+
+  .editor-header h1 {
+    font-size: 18px;
+  }
+
+  .editor-body {
+    padding: 0 12px 12px;
+    gap: 8px;
+  }
+
+  .script-bar select {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .script-name-input {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  #script-text {
+    min-height: 140px;
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  .settings-panel {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .setting-row label:first-child {
+    flex: 0 0 90px;
+    font-size: 13px;
+  }
+
+  .setting-value {
+    font-size: 13px;
+  }
+
+  .btn-start {
+    padding: 13px;
+    font-size: 16px;
+  }
+
+  /* Prompter: wider guide line, bigger text padding */
+  .prompter-text {
+    padding: 50vh 16px 50vh;
+    font-size: 95%;
+  }
+
+  .ctrl-btn-large {
+    width: 60px;
+    height: 60px;
+  }
+
+  .controls-bottom {
+    gap: 20px;
+  }
+}
+
 /* Safe area insets for modern phones */
 @supports (padding: env(safe-area-inset-top)) {
   .editor-header {
